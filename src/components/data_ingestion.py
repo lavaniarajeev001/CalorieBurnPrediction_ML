@@ -7,6 +7,9 @@ import os
 import sys
 from dataclasses import dataclass
 
+from src.components.data_trasformation import DataTransformationConfig
+from src.components.data_trasformation import DataTransformation
+
 @dataclass
 class DataIngestionConfig:
     train_data_path:str=os.path.join("artifacts","train.csv")
@@ -18,7 +21,7 @@ class DataIngestion:
         self.ingestion_config=DataIngestionConfig()
 
     def initiate_data_ingestion(self):
-        logging.info("Entered data ingestion methor/components")
+        logging.info("Entered data ingestion method/components")
         try:
             df = pd.read_csv("notebook\data\gym_members_exercise_tracking.csv")
             logging.info("Reading the data")
@@ -46,3 +49,7 @@ class DataIngestion:
 if __name__=="__main__":
     obj=DataIngestion()
     train_data,test_data=obj.initiate_data_ingestion()
+
+    data_transformation=DataTransformation()
+    train_arr,test_arr,_=data_transformation.initiate_data_transformation(train_data,test_data)
+
