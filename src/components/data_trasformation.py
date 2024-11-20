@@ -4,7 +4,7 @@ from src.logger import logging
 import os
 import numpy as np
 import pandas as pd
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.preprocessing import StandardScaler, OneHotEncoder,OrdinalEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from src.utils import save_object
@@ -32,7 +32,7 @@ class DataTransformation:
 
             cat_pipeline=Pipeline(
                 steps=[
-                    ("one_hot_encoding",OneHotEncoder()),
+                    ("one_hot_encoding",OrdinalEncoder()),
                     ("scaler",StandardScaler(with_mean=False))
                 ]
             )

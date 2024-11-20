@@ -27,16 +27,16 @@ class ModelTrained:
     def __init__(self):
         self.model_trainer_config=ModelTrainerConfig()
 
-    def initiate_model_trained(self,train_array,test_array):
+    def initiate_model_trained(self,train_df,test_df):
         try:
             logging.info("Split training and test input data")
             train_df=pd.read_csv("artifacts\\train.csv")
             test_df=pd.read_csv("artifacts\\test.csv")
-            train_df, test_df = get_encoded_values(train_df=train_df, test_df=test_df)
+            train_df_X_scaled_df, test_df_X_scaled_df = get_encoded_values(train_df=train_df, test_df=test_df)
             X_train,y_train,X_test,y_test=(
-                train_df.drop(columns=["Calories_Burned"],axis=1).values,
+                train_df_X_scaled_df.values,
                 train_df[["Calories_Burned"]].values.ravel(),
-                test_df.drop(columns=["Calories_Burned"],axis=1).values,
+                test_df_X_scaled_df.values,
                 test_df[["Calories_Burned"]].values.ravel()
 
             )

@@ -48,14 +48,35 @@ def save_object(file_path,obj):
 from sklearn.preprocessing import OneHotEncoder
 
 def get_encoded_values(train_df, test_df):
-    # Encode 'Gender'
-    train_df["Gender"] = train_df["Gender"].map({"Male": 1, "Female": 2})
-    test_df["Gender"] = test_df["Gender"].map({"Male": 1, "Female": 2})
+    preprocessor_path=os.path.join("artifacts","preprocessing.pkl")
+    preprocessor=load_object(file_path=preprocessor_path)
+    train_df_X=train_df.drop(["Calories_Burned"],axis=1)
+    train_df_X_scaled=preprocessor.fit_transform(train_df_X)
+    feature_names=preprocessor.get_feature_names_out()
+    train_df_X_scaled_df=pd.DataFrame(train_df_X_scaled,columns=feature_names)
 
-    # Encode 'Workout_Type'
-    train_df["Workout_Type"] = train_df["Workout_Type"].map({"Strength": 1, "Cardio": 2, "Yoga": 3, "HIIT": 4})
-    test_df["Workout_Type"] = test_df["Workout_Type"].map({"Strength": 1, "Cardio": 2, "Yoga": 3, "HIIT": 4})
+    test_df_X=test_df.drop(["Calories_Burned"],axis=1)
+    test_df_X_scaled=preprocessor.fit_transform(test_df_X)
+    feature_names=preprocessor.get_feature_names_out()
+    test_df_X_scaled_df=pd.DataFrame(test_df_X_scaled,columns=feature_names)
 
-    return train_df, test_df
+    return (
+        train_df_X_scaled_df,
+        test_df_X_scaled_df
+    )
+
+
+
+
+
+    
+
+
+def load_object(file_path):
+    try:
+        with open(file_path,"rb") as file_obj:
+            return pickle.load(file_obj)
+    except Exception as e:
+        raise CustomException(e,sys)
 
 
